@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bruteforce {
+    private static final int MAX_LENGTH_WORD = 28;
     private final CaesarCipher caesar = new CaesarCipher();
 
     @SneakyThrows
@@ -16,14 +19,20 @@ public class Bruteforce {
         try (BufferedReader reader = Files.newBufferedReader(Path.of(path));
              BufferedWriter writer = Files.newBufferedWriter(bruteforce)) {
             StringBuilder builder = new StringBuilder();
+            List<String> list = new ArrayList<>();
             while (reader.ready()) {
                 String str = reader.readLine();
                 builder.append(str).append("\n");
+                list.add(str);
             }
             for (int i = 0; i < caesar.alphabetLength(); i++) {
                 String decrypt = caesar.decrypt(builder.toString(), i);
                 if (isValidateText(decrypt)) {
-                    writer.write(decrypt);
+                    for (String str : list) {
+                        String encrypt = caesar.decrypt(str, i);
+                        writer.write(encrypt);
+                        writer.newLine();
+                    }
                     Util.writeMessage("Содержимое расшифровано , ключ расшифровки k = " + i);
                     break;
                 }
@@ -37,7 +46,7 @@ public class Bruteforce {
 
         String[] split = text.split(" ");
         for (String word : split) {
-            if (word.length() > 28) {
+            if (word.length() > MAX_LENGTH_WORD) {
                 return false;
             }
         }
