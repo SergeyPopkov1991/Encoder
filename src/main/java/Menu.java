@@ -19,7 +19,7 @@ public class Menu {
                 case "1" -> new EncryptedDecrypted().encryptedDecrypted(true);
                 case "2" -> new EncryptedDecrypted().encryptedDecrypted(false);
                 case "3" -> new Bruteforce().bruteforce();
-                case "4" -> System.out.println("Синтаксический анализ");
+                case "4" -> new Parsing().parse();
                 case "5" -> {
                     return;
                 }
